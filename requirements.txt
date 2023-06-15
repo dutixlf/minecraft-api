@@ -1,0 +1,2 @@
+setuptools~=65.5.0
+mcrcon~=0.7.0
