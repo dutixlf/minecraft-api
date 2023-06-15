@@ -1,0 +1,8 @@
+README.md
+setup.py
+minecraft_api/minecraft.py
+minecraft_api.egg-info/PKG-INFO
+minecraft_api.egg-info/SOURCES.txt
+minecraft_api.egg-info/dependency_links.txt
+minecraft_api.egg-info/requires.txt
+minecraft_api.egg-info/top_level.txt
