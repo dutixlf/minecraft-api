@@ -1,3 +1,4 @@
 *.session
 tests
 /.idea
+main.py
