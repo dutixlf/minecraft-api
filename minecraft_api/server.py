@@ -12,13 +12,13 @@ class Server:
         data = str(self.mc.command('list')).split(': ')
         players = str(data[1]).split(', ')
         return players
-    def kick(self, players=['Steve'], reason='Kicked by Minecraft_api'):
+    def kick(self, players, reason='Kicked by Minecraft_api'):
         for player in players:
             self.mc.command(f'kick {player} {reason}')
-    def ban(self, players=['Steve'], reason='Kicked by Minecraft_api'):
+    def ban(self, players, reason='Kicked by Minecraft_api'):
         for player in players:
             self.mc.command(f'ban {player} {reason}')
-    def unban(self, players=['Steve']):
+    def unban(self, players):
         for player in players:
             self.mc.command(f'pardon {player}')
     def plugins(self):

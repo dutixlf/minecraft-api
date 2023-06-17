@@ -32,10 +32,10 @@ class Connect:
 
         self.Server = server.Server(self.Connection)
         self.World = world.World(self.Connection, f'minecraft:{World.replace("minecraft:", "")}')
-    def sendCommand(self, cmd=str):
+    def sendCommand(self, command=str):
         '''
         Send command as RCON
-        :param str cmd: Command what you want to send
+        :param str command: Command what you want to send
         '''
-        req = self.Connection.command(cmd)
+        req = self.Connection.command(command)
         return req
