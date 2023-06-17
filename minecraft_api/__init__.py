@@ -1,8 +1,8 @@
 from mcrcon import MCRcon
 from pathlib import Path
 from getpass import getpass
-import minecraft_api.server
-import minecraft_api.world
+import minecraft_api.server as server
+import minecraft_api.world as world
 
 class Connect:
     def __init__(self, session='session', World='overworld'):
