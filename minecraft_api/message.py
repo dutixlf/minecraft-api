@@ -1,4 +1,5 @@
-class message:
+import json
+class Message:
     def __init__(self):
         '''
         Creating a new message
@@ -11,7 +12,7 @@ class message:
         :param str command: Command what execute after click
         :param str hover: Output on hover (optional)
         '''
-        data = {'text': text, 'clickevent': {'action': 'run_command', 'value': f'/{command}'}}
+        data = {'text': str(text), 'clickEvent': {'action': 'run_command', 'value': f'/{command}'}}
         if hover != None:
             data['hoverEvent'] = {'action': 'show_text', 'contents': hover}
         self.message.append(data)
@@ -22,7 +23,7 @@ class message:
         :param str command: Command what suggest after click
         :param str hover: Output on hover (optional)
         '''
-        data = {'text': text, 'clickevent': {'action': 'suggest_command', 'value': f'/{command}'}}
+        data = {'text': str(text), 'clickEvent': {'action': 'suggest_command', 'value': f'/{command}'}}
         if hover != None:
             data['hoverEvent'] = {'action': 'show_text', 'contents': hover}
         self.message.append(data)
@@ -33,7 +34,7 @@ class message:
         :param str message: Message what suggest after click
         :param str hover: Output on hover (optional)
         '''
-        data = {'text': text, 'insertion': message}
+        data = {'text': str(text), 'insertion': message}
         if hover != None:
             data['hoverEvent'] = {'action': 'show_text', 'contents': hover}
         self.message.append(data)
@@ -44,7 +45,7 @@ class message:
         :param str clipboard: Something what copying after click
         :param str hover: Output on hover (optional)
         '''
-        data = {'text': text, 'clickevent': {'action': 'copy_to_clipboard', 'value': clipboard}}
+        data = {'text': str(text), 'clickEvent': {'action': 'copy_to_clipboard', 'value': clipboard}}
         if hover != None:
             data['hoverEvent'] = {'action': 'show_text', 'contents': hover}
         self.message.append(data)
@@ -55,7 +56,7 @@ class message:
         :param str url: Url what opens after click
         :param str hover: Output on hover (optional)
         '''
-        data = {'text': text, 'clickevent': {'action': 'open_url', 'value': url}}
+        data = {'text': str(text), 'clickEvent': {'action': 'open_url', 'value': url}}
         if hover != None:
             data['hoverEvent'] = {'action': 'show_text', 'contents': hover}
         self.message.append(data)
@@ -65,14 +66,15 @@ class message:
         :param str text: Message text
         :param str hover: Output on hover (optional)
         '''
-        data = {'text': text}
+        data = {'text': str(text)}
         if hover != None:
-            data['hoverEvent'] = {'action': 'show_text', 'contents': hover}
+            data["hoverEvent"] = {"action": "show_text", "contents": hover}
         self.message.append(data)
-    def sendMessage(self, mc):
+    def sendMessage(self, mc, players=['@a']):
         '''
         Send this message
         :param func mc: Minecraft session
         '''
-        message = str(self.message).replace("'", '"')
-        mc.sendCommand(f'tellraw @a {message}')
+        message = json.dumps(self.message)
+        for player in players:
+            mc.sendCommand(f'tellraw {player} {message}')

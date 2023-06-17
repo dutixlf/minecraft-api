@@ -1,15 +1,16 @@
 from mcrcon import MCRcon
 from pathlib import Path
+from getpass import getpass
+import minecraft_api.server
+import minecraft_api.world
 
 class Connect:
-    def __init__(self, session='session', world='overworld'):
+    def __init__(self, session='session', World='overworld'):
         '''
         Creating/Connecting to session.
-        session = file with connection data
-        :param session: str
-        :param world: str
+        :param str session: Session's name
+        :param str world: Default world to command execution
         '''
-        self.world = f'minecraft:{world.replace("minecraft:", "")}'
         self.session = session
         if Path(f'{session}.session').is_file():
             with open(f'{session}.session', 'r+') as f:
@@ -17,27 +18,24 @@ class Connect:
                 host=data[0]
                 password=data[1]
                 port=int(data[2])
-                self.mcr = MCRcon(host=host, password=password, port=port)
+                self.Connection = MCRcon(host=host, password=password, port=port)
+                self.Connection.connect()
         else:
             with open(f'{session}.session', 'w+') as f:
                 host = str(input('Enter hostname: '))
                 port = int(input('Enter port: '))
-                password = str(input('Enter password: '))
+                password = getpass('Enter password: ')
                 f.write(f'{host}\n{password}\n{port}')
-                self.mcr = MCRcon(host=host, password=password, port=port)
-        self.mcr.connect()
-        return f'Connected to {host}:{port}'
-    def setWorld(self, world='overworld'):
-        '''
-        Replace command execution world
-        :param world: str
-        '''
-        self.world = f'minecraft:{world.replace("minecraft:", "")}'
-        return self.world
+            self.Connection = MCRcon(host=host, password=password, port=port)
+            self.Connection.connect()
+            self.Connection.command('gamerule sendCommandFeedback false')
+
+        self.Server = server.Server(self.Connection)
+        self.World = world.World(self.Connection, f'minecraft:{World.replace("minecraft:", "")}')
     def sendCommand(self, cmd=str):
         '''
         Send command as RCON
-        :param cmd: str
+        :param str cmd: Command what you want to send
         '''
-        req = self.mcr.command(f'execute in {self.world} run {cmd}')
+        req = self.Connection.command(cmd)
         return req
