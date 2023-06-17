@@ -2,3 +2,5 @@
 tests
 /.idea
 main.py
+.replit
+/venv
